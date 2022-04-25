@@ -1,0 +1,38 @@
+{
+  "name": "nubank-token-api",
+  "version": "1.0.0",
+  "description": "API para facilitar a criação e atualização do token (Bearer authentication) necessário para o acesso a API pública do Nubank (para consulta de extratos, saldo e etc.). Baseado no projeto https://github.com/andreroggeri/pynubank",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server.js",
+    "dev": "env-cmd -r ./env.json -e local node src/server.js",
+    "deploy": "gcloud app deploy",
+    "start-gendoc": "node swagger.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=16"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "swagger_output.json"
+    ]
+  },
+  "dependencies": {
+    "dotenv": "^14.2.0",
+    "env-cmd": "^10.1.0",
+    "express": "^4.17.2",
+    "http-status-codes": "^2.2.0",
+    "node-fetch": "^2.6.6",
+    "pino": "^7.6.3",
+    "pino-pretty": "^7.3.0",
+    "swagger-autogen": "^2.21.1",
+    "swagger-ui-express": "^4.3.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
