@@ -1,4 +1,4 @@
-const { requestCode, exchangeKey, getRefreshToken, query } = require('../api')
+const { requestCode, exchangeKey, getRefreshToken, query, bills } = require('../api')
 
 /**
  * Ordem:
@@ -68,5 +68,20 @@ module.exports = function (app) {
             schema: { $ref: '#/definitions/ResponseQueryDTO' }
         }
         */
-    query)    
+    query)
+
+    app.post('/bills',
+        /*    
+        #swagger.tags = ['Query']
+        #swagger.description = 'Executa uma query GraphQL'
+        #swagger.parameters['obj'] = {
+            in: 'body',
+            required: true,            
+            schema: { $ref: '#/definitions/RequestQueryDTO' }
+        }
+        #swagger.responses[200] = {
+            schema: { $ref: '#/definitions/ResponseQueryDTO' }
+        }
+        */
+    bills)       
 }

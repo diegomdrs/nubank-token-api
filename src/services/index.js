@@ -4,7 +4,7 @@ const { parseAuthenticateHeaders } = require('../util/util')
 const { X509Certificate } = require('crypto')
 const logger = require('../config/logger')
 const { StatusCodes } = require('http-status-codes')
-const { discovery, requestCode, exchangeKey, getRefreshToken, query } = require('../gateway')
+const { discovery, requestCode, exchangeKey, getRefreshToken, query, bills } = require('../gateway')
 
 module.exports = {
     requestCode: async (request) => {
@@ -28,6 +28,7 @@ module.exports = {
         logger.debug(`discovery json: ${discoveryJson}`)
 
         const genCertificateUrl = discoveryJson.gen_certificate
+        const tokenUrl = discoveryJson.token
 
         return requestCode(genCertificateUrl, payload).then(({ headers, status, json }) => {
             logger.info(`status: ${status}`)
@@ -57,6 +58,7 @@ module.exports = {
                 sentTo,
                 encryptedCode,
                 genCertificateUrl,
+                tokenUrl,
                 deviceId,
                 privateKeyBase64,
                 privateKeyCryptoBase64
@@ -171,6 +173,30 @@ module.exports = {
                 throw new Error(`Status code: ${status}`)
 
             return json.data
+        }).catch(err => {
+            logger.error(err)
+            throw err
+        })
+    },
+
+    bills: async (request) => {
+        const privateKeyPEM = convertPrivateKeyBase64ToPEM(request.privateKey)
+        const certificatePEM = convertCertificateBase64toPEM(request.certificate)
+
+        const cert = {
+            cert: certificatePEM,
+            key: privateKeyPEM,
+            passphrase: '',
+        }
+
+        return bills(request.billsUrl, request.refreshToken, cert).then(({ status, json }) => {
+            logger.info(`status: ${status}`)
+            logger.debug(`json: ${JSON.stringify(json)}`)
+
+            if (status != 200)
+                throw new Error(`Status code: ${status}`)
+
+            return json
         }).catch(err => {
             logger.error(err)
             throw err

@@ -8,10 +8,11 @@ class RequestCodeDTO {
 }
 
 class ResponseRequestCodeDTO {
-    constructor({ sentTo, encryptedCode, genCertificateUrl, deviceId, privateKeyBase64, privateKeyCryptoBase64 }) {
+    constructor({ sentTo, encryptedCode, genCertificateUrl, tokenUrl, deviceId, privateKeyBase64, privateKeyCryptoBase64 }) {
         this.sentTo = sentTo
         this.encryptedCode = encryptedCode
         this.genCertificateUrl = genCertificateUrl
+        this.tokenUrl = tokenUrl
         this.deviceId = deviceId
         this.privateKey = privateKeyBase64
         this.privateKeyCrypto = privateKeyCryptoBase64

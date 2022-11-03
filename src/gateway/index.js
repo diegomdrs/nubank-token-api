@@ -67,5 +67,22 @@ module.exports = {
             const json = await res.json()
             return { status: res.status, json }
         })
+    },
+
+    bills: async (billsUrl, refreshToken, cert) => {
+        // mTLS        
+        const agent = new Agent({ ...cert, minVersion: "TLSv1.2", maxVersion: "TLSv1.2" })
+
+        return fetch(billsUrl, {
+            agent,
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${refreshToken}`
+            }
+        }).then(async res => {
+            const json = await res.json()
+            return { status: res.status, json }
+        })
     }
 }

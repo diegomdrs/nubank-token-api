@@ -57,6 +57,11 @@ module.exports = {
                     description: 'URL para obtenção do código',
                     example: 'https://prod-global-webapp-proxy.nubank.com.br/api/proxy/AJxL5LApUVAX0b5R5DnjMw3-9ibnk8UnZg.aHR0cHM6Ly9wcm9kLWdsb2JhbC1hdXRoLm51YmFuay5jb20uYnIvYXBpL2dlbi1jZXJ0aWZpY2F0ZXM'
                 },
+                tokenUrl: {
+                    type: 'string',
+                    description: 'URL de obtenção do token',
+                    example: 'https://prod-global-auth.nubank.com.br/api/token'
+                },
                 deviceId: {
                     type: 'string',
                     description: 'Identificação (uuidv4) do dispositivo',
