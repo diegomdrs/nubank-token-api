@@ -70,7 +70,7 @@ class RequestQueryDTO {
 }
 
 class ResponseQueryDTO {
-    constructor({ result }) {
+    constructor(result) {
         this.result = result
     }
 }

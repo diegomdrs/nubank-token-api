@@ -160,6 +160,9 @@ module.exports = {
             key: privateKeyPEM,
             passphrase: '',
         }
+
+        // TODO - Melhorar recebimento da query GraphQL
+
         return query(request.queryUrl, request.refreshToken, cert, request.query).then(({ status, json }) => {
             logger.info(`status: ${status}`)
             logger.debug(`json: ${JSON.stringify(json)}`)
