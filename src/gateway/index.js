@@ -1,7 +1,19 @@
 const fetch = require('node-fetch')
 const { Agent } = require('https')
 
+const DISCOVERY_APP_URL = 'https://prod-s0-webapp-proxy.nubank.com.br/api/app/discovery'
+
 module.exports = {
+    discovery: async () => {
+        return fetch(DISCOVERY_APP_URL, {
+            method: 'get',
+            headers: { 'Content-Type': 'application/json' }
+        }).then(async res => {
+            const json = await res.json()
+            return { headers: res.headers, status: res.status, json }
+        })
+    },
+
     requestCode: async (genCertificateUrl, payload) => {
         return fetch(genCertificateUrl, {
             method: 'post',

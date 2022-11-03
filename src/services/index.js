@@ -4,7 +4,7 @@ const { parseAuthenticateHeaders } = require('../util/util')
 const { X509Certificate } = require('crypto')
 const logger = require('../config/logger')
 const { StatusCodes } = require('http-status-codes')
-const { requestCode, exchangeKey, getRefreshToken, query } = require('../gateway')
+const { discovery, requestCode, exchangeKey, getRefreshToken, query } = require('../gateway')
 
 module.exports = {
     requestCode: async (request) => {
@@ -23,7 +23,13 @@ module.exports = {
             'device_id': deviceId
         }
 
-        return requestCode(request.genCertificateUrl, payload).then(({ headers, status, json }) => {
+        const { status: discoveryStatus, json: discoveryJson } = await discovery()
+        logger.info(`discovery status: ${discoveryStatus}`)
+        logger.debug(`discovery json: ${discoveryJson}`)
+
+        const genCertificateUrl = discoveryJson.gen_certificate
+
+        return requestCode(genCertificateUrl, payload).then(({ headers, status, json }) => {
             logger.info(`status: ${status}`)
             logger.debug(`json: ${JSON.stringify(json)}`)
 
@@ -50,6 +56,7 @@ module.exports = {
             return {
                 sentTo,
                 encryptedCode,
+                genCertificateUrl,
                 deviceId,
                 privateKeyBase64,
                 privateKeyCryptoBase64
@@ -159,7 +166,7 @@ module.exports = {
 
             if (status != 200)
                 throw new Error(`Status code: ${status}`)
-                
+
             return json.data
         }).catch(err => {
             logger.error(err)

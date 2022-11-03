@@ -3,15 +3,15 @@ class RequestCodeDTO {
     constructor(body) {
         this.login = body.login
         this.password = body.password
-        this.genCertificateUrl = body.genCertificateUrl
         this.deviceName = body.deviceName
     }
 }
 
 class ResponseRequestCodeDTO {
-    constructor({ sentTo, encryptedCode, deviceId, privateKeyBase64, privateKeyCryptoBase64 }) {
+    constructor({ sentTo, encryptedCode, genCertificateUrl, deviceId, privateKeyBase64, privateKeyCryptoBase64 }) {
         this.sentTo = sentTo
         this.encryptedCode = encryptedCode
+        this.genCertificateUrl = genCertificateUrl
         this.deviceId = deviceId
         this.privateKey = privateKeyBase64
         this.privateKeyCrypto = privateKeyCryptoBase64
