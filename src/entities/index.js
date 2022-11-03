@@ -52,14 +52,26 @@ class RequestGetRefreshTokenDTO {
 }
 
 class ResponseGetRefreshTokenDTO {
-    constructor({ refreshToken, refreshBefore }) {
+    constructor({ refreshToken, refreshBefore, links }) {
         this.refreshToken = refreshToken
         this.refreshBefore = refreshBefore
+        this.links = links
+    }
+}
+
+class RequestQueryDTO {
+    constructor(body) {
+        this.queryUrl = body.queryUrl
+        this.query = body.query,
+        this.refreshToken = body.refreshToken
+        this.privateKey = body.privateKey
+        this.certificate = body.certificate
     }
 }
 
 module.exports = {
     RequestCodeDTO, ResponseRequestCodeDTO,
     RequestExchangeKeyDTO, ResponseExchangeKeyDTO,
-    RequestGetRefreshTokenDTO, ResponseGetRefreshTokenDTO
+    RequestGetRefreshTokenDTO, ResponseGetRefreshTokenDTO,
+    RequestQueryDTO
 }

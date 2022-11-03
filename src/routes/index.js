@@ -1,4 +1,4 @@
-const { requestCode, exchangeKey, getRefreshToken } = require('../api')
+const { requestCode, exchangeKey, getRefreshToken, query } = require('../api')
 
 /**
  * Ordem:
@@ -26,7 +26,6 @@ module.exports = function (app) {
         requestCode)
 
     app.post('/exchangeKey',
-
         /*    
         #swagger.tags = ['Token']
         #swagger.description = 'Obtém o certificado (base64) do dispositivo habilitado a obter um token'
@@ -40,6 +39,7 @@ module.exports = function (app) {
         }
         */
         exchangeKey)
+
     app.post('/getRefreshToken',
         /*    
         #swagger.tags = ['Token']
@@ -54,4 +54,19 @@ module.exports = function (app) {
         }
         */
     getRefreshToken)
+
+    app.post('/query',
+        /*    
+        #swagger.tags = ['Token']
+        #swagger.description = 'Obtém o token de acesso'
+        #swagger.parameters['obj'] = {
+            in: 'body',
+            required: true,            
+            schema: { $ref: '#/definitions/RequestGetRefreshTokenDTO' }
+        }
+        #swagger.responses[200] = {
+            schema: { $ref: '#/definitions/ResponseGetRefreshTokenDTO' }
+        }
+        */
+    query)    
 }
