@@ -1,6 +1,6 @@
 {
   "name": "nubank-token-api",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "API para facilitar a criação e atualização do token (Bearer authentication) necessário para o acesso a API pública do Nubank (para consulta de extratos, saldo e etc.). Baseado no projeto https://github.com/andreroggeri/pynubank",
   "main": "index.js",
   "scripts": {
