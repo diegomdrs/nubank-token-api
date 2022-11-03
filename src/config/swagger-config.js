@@ -35,11 +35,6 @@ module.exports = {
                     type: 'string',
                     description: 'Apelido do dispositivo a ser autorizado a obter o token',
                     example: 'MY DEVICE'
-                },
-                genCertificateUrl: {
-                    type: 'string',
-                    description: 'URL para obtenção do código',
-                    example: 'https://prod-global-webapp-proxy.nubank.com.br/api/proxy/AJxL5LApUVAX0b5R5DnjMw3-9ibnk8UnZg.aHR0cHM6Ly9wcm9kLWdsb2JhbC1hdXRoLm51YmFuay5jb20uYnIvYXBpL2dlbi1jZXJ0aWZpY2F0ZXM'
                 }
             },
             required: ['login','password','deviceName','genCertificateUrl']
@@ -56,6 +51,11 @@ module.exports = {
                     type: 'string',
                     description: 'Código encriptado do dispositivo autorizado',
                     example: '[...]'
+                },
+                genCertificateUrl: {
+                    type: 'string',
+                    description: 'URL para obtenção do código',
+                    example: 'https://prod-global-webapp-proxy.nubank.com.br/api/proxy/AJxL5LApUVAX0b5R5DnjMw3-9ibnk8UnZg.aHR0cHM6Ly9wcm9kLWdsb2JhbC1hdXRoLm51YmFuay5jb20uYnIvYXBpL2dlbi1jZXJ0aWZpY2F0ZXM'
                 },
                 deviceId: {
                     type: 'string',

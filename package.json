@@ -8,7 +8,7 @@
     "start": "node src/server.js",
     "dev": "env-cmd -r ./env.json -e local node src/server.js",
     "deploy": "gcloud app deploy",
-    "start-gendoc": "node swagger.js"
+    "start-gendoc": "node src/config/swagger.js"
   },
   "author": "",
   "license": "ISC",
