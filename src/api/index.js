@@ -1,5 +1,5 @@
 const { StatusCodes } = require('http-status-codes')
-const { RequestCodeDTO, ResponseRequestCodeDTO, RequestExchangeKeyDTO, ResponseExchangeKeyDTO, RequestGetRefreshTokenDTO, ResponseGetRefreshTokenDTO, RequestQueryDTO } = require('../entities')
+const { RequestCodeDTO, ResponseRequestCodeDTO, RequestExchangeKeyDTO, ResponseExchangeKeyDTO, RequestGetRefreshTokenDTO, ResponseGetRefreshTokenDTO, RequestQueryDTO, ResponseQueryDTO } = require('../entities')
 const { requestCode, exchangeKey, getRefreshToken, query } = require('../services')
 
 module.exports = {
@@ -41,7 +41,7 @@ module.exports = {
             const request = new RequestQueryDTO(req.body)
             const response = await query(request)
 
-            return resp.json(response);
+            return resp.json(new ResponseQueryDTO(response));
         } catch (error) {
             resp.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ message: error.message })
         }

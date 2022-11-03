@@ -57,15 +57,15 @@ module.exports = function (app) {
 
     app.post('/query',
         /*    
-        #swagger.tags = ['Token']
-        #swagger.description = 'Obtém o token de acesso'
+        #swagger.tags = ['Query']
+        #swagger.description = 'Executa uma query GraphQL'
         #swagger.parameters['obj'] = {
             in: 'body',
             required: true,            
-            schema: { $ref: '#/definitions/RequestGetRefreshTokenDTO' }
+            schema: { $ref: '#/definitions/RequestQueryDTO' }
         }
         #swagger.responses[200] = {
-            schema: { $ref: '#/definitions/ResponseGetRefreshTokenDTO' }
+            schema: { $ref: '#/definitions/ResponseQueryDTO' }
         }
         */
     query)    

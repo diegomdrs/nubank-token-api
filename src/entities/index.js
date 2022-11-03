@@ -69,9 +69,15 @@ class RequestQueryDTO {
     }
 }
 
+class ResponseQueryDTO {
+    constructor({ result }) {
+        this.result = result
+    }
+}
+
 module.exports = {
     RequestCodeDTO, ResponseRequestCodeDTO,
     RequestExchangeKeyDTO, ResponseExchangeKeyDTO,
     RequestGetRefreshTokenDTO, ResponseGetRefreshTokenDTO,
-    RequestQueryDTO
+    RequestQueryDTO, ResponseQueryDTO
 }

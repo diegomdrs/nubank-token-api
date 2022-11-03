@@ -190,6 +190,47 @@ module.exports = {
                     description: 'Data final da validade do token',
                     example: '2022-10-19T14:05:27.000Z'
                 },
+                links: {
+                    type: 'object',
+                    description: 'Objecto com os links para a url das queries (ghostflame), entre outros'
+                }               
+            }
+        },
+        RequestQueryDTO: {
+            type: 'object',
+            properties: {
+                queryUrl: {
+                    type: 'string',
+                    description: 'URL para execução das queries GraphQL',
+                    example: 'https://prod-s0-stormshield.nubank.com.br/api/query'
+                },
+                query: {
+                    type: 'string',
+                    description: 'Query GraphQL',
+                    example: '{\"query\":\"{ viewer { savingsAccount { currentSavingsBalance { netAmount }}}}\"}'
+                },
+                refreshToken: {
+                    type: 'string',
+                    description: 'O token (JWT) de segurança'
+                },
+                privateKey: {
+                    type: 'string',
+                    description: 'Base64 da chave privada gerada'
+                },
+                certificate: {
+                    type: 'string',
+                    description: 'Base64  do certificado do dispositivo autorizado a obter o token de acesso'
+                },
+            },
+            required: ['queryUrl','query','refreshToken','privateKey', 'certificate']
+        },
+        ResponseQueryDTO: {
+            type: 'object',
+            properties: {
+                result: {
+                    type: 'object',
+                    description: 'Resultado da query GraphQL'
+                }             
             }
         },
     }
