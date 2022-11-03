@@ -159,11 +159,8 @@ module.exports = {
 
             if (status != 200)
                 throw new Error(`Status code: ${status}`)
-
-            const refreshToken = json.data.viewer.savingsAccount.currentSavingsBalance.netAmount
-            logger.debug(`refreshToken: ${refreshToken}`)
-
-            return { refreshToken }
+                
+            return json.data
         }).catch(err => {
             logger.error(err)
             throw err

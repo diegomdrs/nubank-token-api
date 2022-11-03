@@ -41,7 +41,7 @@ module.exports = {
             const request = new RequestQueryDTO(req.body)
             const response = await query(request)
 
-            return resp.json(new ResponseGetRefreshTokenDTO(response));
+            return resp.json(response);
         } catch (error) {
             resp.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ message: error.message })
         }
