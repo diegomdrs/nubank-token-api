@@ -1,11 +1,10 @@
-const fetch = require('node-fetch')
 const { v4: uuidv4 } = require('uuid')
-const { Agent } = require('https')
 const { generateKeyPair, convertPrivateKeyPEMToBase64, convertPrivateKeyBase64ToPEM, extractPublicKeyPEMFromPrivateKeyPEM, convertCertificatePEMtoBase64, convertCertificateBase64toPEM } = require('../util/crypto-util')
 const { parseAuthenticateHeaders } = require('../util/util')
 const { X509Certificate } = require('crypto')
 const logger = require('../config/logger')
 const { StatusCodes } = require('http-status-codes')
+const { requestCode, exchangeKey, getRefreshToken, query } = require('../gateway')
 
 module.exports = {
     requestCode: async (request) => {
@@ -24,15 +23,7 @@ module.exports = {
             'device_id': deviceId
         }
 
-        return fetch(request.genCertificateUrl, {
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        }).then(async res => {
-            const json = await res.json()
-            return { headers: res.headers, status: res.status, json }
-        }).then(({ headers, status, json }) => {
-
+        return requestCode(request.genCertificateUrl, payload).then(({ headers, status, json }) => {
             logger.info(`status: ${status}`)
             logger.debug(`json: ${JSON.stringify(json)}`)
 
@@ -88,15 +79,7 @@ module.exports = {
             'encrypted-code': request.encryptedCode
         }
 
-        return fetch(request.genCertificateUrl, {
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        }).then(async res => {
-            const json = await res.json()
-            return { headers: res.headers, status: res.status, json }
-        }).then(({ status, json }) => {
-
+        return exchangeKey(request.genCertificateUrl, payload).then(({ status, json }) => {
             logger.info(`status: ${status}`)
             logger.debug(`json: ${JSON.stringify(json)}`)
 
@@ -132,32 +115,18 @@ module.exports = {
             'password': request.password
         }
 
-        // MTLS
         const cert = {
             cert: certificatePEM,
             key: privateKeyPEM,
             passphrase: '',
         }
-        const agent = new Agent({ ...cert, minVersion: "TLSv1.2", maxVersion: "TLSv1.2" })
 
-        return fetch(request.tokenUrl, {
-            agent,
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        }).then(async res => {
-            const json = await res.json()
-            return { status: res.status, json }
-        }).then(({ status, json }) => {
+        return getRefreshToken(request.tokenUrl, cert, payload).then(({ status, json }) => {
             logger.info(`status: ${status}`)
             logger.debug(`json: ${JSON.stringify(json)}`)
 
             if (status != 200)
                 throw new Error(`Status code: ${status}`)
-
-            // TODO - Entender access_token vs. access_token
-            // const accessToken = json.access_token
-            // logger.debug(`accessToken: ${accessToken}`)
 
             const refreshToken = json.access_token
             logger.debug(`refreshToken: ${refreshToken}`)
@@ -179,26 +148,12 @@ module.exports = {
         const privateKeyPEM = convertPrivateKeyBase64ToPEM(request.privateKey)
         const certificatePEM = convertCertificateBase64toPEM(request.certificate)
 
-        // MTLS
         const cert = {
             cert: certificatePEM,
             key: privateKeyPEM,
             passphrase: '',
         }
-        const agent = new Agent({ ...cert, minVersion: "TLSv1.2", maxVersion: "TLSv1.2" })
-
-        return fetch(request.queryUrl, {
-            agent,
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${request.refreshToken}`
-            },
-            body: request.query
-        }).then(async res => {
-            const json = await res.json()
-            return { status: res.status, json }
-        }).then(({ status, json }) => {
+        return query(request.queryUrl, request.refreshToken, cert, request.query).then(({ status, json }) => {
             logger.info(`status: ${status}`)
             logger.debug(`json: ${JSON.stringify(json)}`)
 
