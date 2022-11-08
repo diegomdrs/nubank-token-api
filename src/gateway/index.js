@@ -2,6 +2,7 @@ const fetch = require('node-fetch')
 const { Agent } = require('https')
 
 const DISCOVERY_APP_URL = 'https://prod-s0-webapp-proxy.nubank.com.br/api/app/discovery'
+const agent = { minVersion: "TLSv1.2", maxVersion: "TLSv1.2" }
 
 module.exports = {
     discovery: async () => {
@@ -37,11 +38,8 @@ module.exports = {
     },
 
     getRefreshToken: async (tokenUrl, cert, payload) => {
-        // mTLS
-        const agent = new Agent({ ...cert, minVersion: "TLSv1.2", maxVersion: "TLSv1.2" })
-
         return fetch(tokenUrl, {
-            agent,
+            agent: new Agent({ ...cert, ...agent }), // mTLS
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -51,18 +49,15 @@ module.exports = {
         })
     },
 
-    query: async (queryUrl, refreshToken, cert, query) => {
-        // mTLS        
-        const agent = new Agent({ ...cert, minVersion: "TLSv1.2", maxVersion: "TLSv1.2" })
-
+    query: async (queryUrl, refreshToken, cert, payload) => {
         return fetch(queryUrl, {
-            agent,
+            agent: new Agent({ ...cert, ...agent }), // mTLS
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${refreshToken}`
             },
-            body: query
+            body: JSON.stringify(payload)
         }).then(async res => {
             const json = await res.json()
             return { status: res.status, json }
@@ -70,11 +65,8 @@ module.exports = {
     },
 
     bills: async (billsUrl, refreshToken, cert) => {
-        // mTLS        
-        const agent = new Agent({ ...cert, minVersion: "TLSv1.2", maxVersion: "TLSv1.2" })
-
         return fetch(billsUrl, {
-            agent,
+            agent: new Agent({ ...cert, ...agent }), // mTLS
             method: 'get',
             headers: {
                 'Content-Type': 'application/json',

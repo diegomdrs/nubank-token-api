@@ -212,7 +212,7 @@ module.exports = {
                 query: {
                     type: 'string',
                     description: 'Query GraphQL',
-                    example: '{\"query\":\"{ viewer { savingsAccount { currentSavingsBalance { netAmount }}}}\"}'
+                    example: '{ viewer { savingsAccount { currentSavingsBalance { netAmount }}}}'
                 },
                 refreshToken: {
                     type: 'string',

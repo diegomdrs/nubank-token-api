@@ -164,8 +164,11 @@ module.exports = {
         }
 
         // TODO - Melhorar recebimento da query GraphQL
+        const graphQL = {
+            query: request.query
+        }
 
-        return query(request.queryUrl, request.refreshToken, cert, request.query).then(({ status, json }) => {
+        return query(request.queryUrl, request.refreshToken, cert, graphQL).then(({ status, json }) => {
             logger.info(`status: ${status}`)
             logger.debug(`json: ${JSON.stringify(json)}`)
 
